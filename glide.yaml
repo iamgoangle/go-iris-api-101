@@ -1,0 +1,4 @@
+package: github.com/iamgoangle/go-api-101
+import:
+- package: github.com/kataras/iris
+  version: ^10.2.1
