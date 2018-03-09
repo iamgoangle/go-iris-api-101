@@ -4,15 +4,15 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
 	"github.com/kataras/iris/middleware/recover"
+
+	"github.com/iamgoangle/go-api-101/controllers"
 )
 
-type Product struct {
-	Title       string  `json:"Title"`
-	Description string  `json:"Description"`
-	Price       float32 `json:"Price"`
+type Company struct {
+	Name  string
+	City  string
+	Other string
 }
-
-type Products []Product
 
 func main() {
 	app := iris.Default()
@@ -23,32 +23,13 @@ func main() {
 	app.Use(logger.New())
 
 	// METHOD: GET
-	// ROUTE: /
-	app.Handle("GET", "/", func(ctx iris.Context) {
-		ctx.HTML("Hello world")
-	})
-
-	// METHOD: GET
 	// ROUTE: /products
-	app.Handle("GET", "/products", func(ctx iris.Context) {
-		var Products Products
-		var IPhoneX = Product{
-			Title:       "iPhone X",
-			Description: "This is a new generation of iphone",
-			Price:       30000.00,
-		}
+	app.Handle("GET", "/products", controllers.GetProducts)
 
-		var SamsungS9 = Product{
-			Title:       "Samsung Galaxy S9",
-			Description: "Samsung Galaxy Phone",
-			Price:       29000.00,
-		}
-
-		Products = append(Products, IPhoneX)
-		Products = append(Products, SamsungS9)
-
-		ctx.JSON(Products)
-	})
+	// METHOD: POST
+	// ROUTE product
+	// JSON raw body
+	app.Handle("POST", "product", controllers.PostProduct)
 
 	app.Run(iris.Addr("localhost:3000"), iris.WithoutServerError(iris.ErrServerClosed))
 }
